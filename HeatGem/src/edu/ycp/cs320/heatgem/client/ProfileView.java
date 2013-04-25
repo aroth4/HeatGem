@@ -1,25 +1,19 @@
 package edu.ycp.cs320.heatgem.client;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell.Context;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IntegerBox;
-import com.google.gwt.user.client.ui.LongBox;
+import com.google.gwt.user.client.ui.NumberLabel;
 
 public class ProfileView extends Composite {
+	
+	private Image UserFace;
+	private NumberLabel<Integer> numberLevelLabel;
+	private NumberLabel<Integer> experienceLabel;
+	private Label nameProfileLabel;
 
 	/**
 	 * @param args
@@ -45,13 +39,15 @@ public class ProfileView extends Composite {
 		layoutPanel.setWidgetLeftWidth(lblProfileView, 244.0, Unit.PX, 99.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblProfileView, 23.0, Unit.PX, 18.0, Unit.PX);
 		
-		Image image = new Image("Defeat.png");
-		image.setAltText("you");
-		layoutPanel.add(image);
-		layoutPanel.setWidgetLeftWidth(image, 337.0, Unit.PX, 179.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(image, 81.0, Unit.PX, 197.0, Unit.PX);
+		//Image image = new Image("Defeat.png");
+		UserFace = HeatGem.getImage("Defeat.png");
 		
-		Label lblName = new Label("Name");
+		UserFace.setAltText("you");
+		layoutPanel.add(UserFace);
+		layoutPanel.setWidgetLeftWidth(UserFace, 337.0, Unit.PX, 179.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(UserFace, 81.0, Unit.PX, 197.0, Unit.PX);
+		
+		Label lblName = new Label("Alice");
 		layoutPanel.add(lblName);
 		layoutPanel.setWidgetLeftWidth(lblName, 20.0, Unit.PX, 56.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblName, 81.0, Unit.PX, 18.0, Unit.PX);
@@ -76,35 +72,30 @@ public class ProfileView extends Composite {
 		layoutPanel.setWidgetLeftWidth(lblLosses, 20.0, Unit.PX, 56.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblLosses, 284.0, Unit.PX, 18.0, Unit.PX);
 		
-		TextBox txtbxAlice = new TextBox();
-		txtbxAlice.setText("Alice");
-		layoutPanel.add(txtbxAlice);
-		layoutPanel.setWidgetLeftWidth(txtbxAlice, 72.0, Unit.PX, 138.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(txtbxAlice, 70.0, Unit.PX, 30.0, Unit.PX);
+		numberLevelLabel = new NumberLabel<Integer>();
+		layoutPanel.add(numberLevelLabel);
+		layoutPanel.setWidgetLeftWidth(numberLevelLabel, 105.0, Unit.PX, 131.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(numberLevelLabel, 128.0, Unit.PX, 18.0, Unit.PX);
 		
-		IntegerBox integerBox = new IntegerBox();
-		integerBox.setText("10");
-		layoutPanel.add(integerBox);
-		layoutPanel.setWidgetLeftWidth(integerBox, 72.0, Unit.PX, 151.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(integerBox, 120.0, Unit.PX, 26.0, Unit.PX);
+		experienceLabel = new NumberLabel<Integer>();
+		layoutPanel.add(experienceLabel);
+		layoutPanel.setWidgetLeftWidth(experienceLabel, 105.0, Unit.PX, 131.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(experienceLabel, 181.0, Unit.PX, 18.0, Unit.PX);
 		
-		LongBox longBox = new LongBox();
-		longBox.setText("4258764049");
-		layoutPanel.add(longBox);
-		layoutPanel.setWidgetLeftWidth(longBox, 93.0, Unit.PX, 151.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(longBox, 173.0, Unit.PX, 26.0, Unit.PX);
+		nameProfileLabel = new Label("New label");
+		layoutPanel.add(nameProfileLabel);
+		layoutPanel.setWidgetLeftWidth(nameProfileLabel, 105.0, Unit.PX, 56.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(nameProfileLabel, 81.0, Unit.PX, 18.0, Unit.PX);
 		
-		IntegerBox integerBox_1 = new IntegerBox();
-		integerBox_1.setText("2456");
-		layoutPanel.add(integerBox_1);
-		layoutPanel.setWidgetLeftWidth(integerBox_1, 72.0, Unit.PX, 151.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(integerBox_1, 228.0, Unit.PX, 26.0, Unit.PX);
+		NumberLabel<Integer> winsLabel = new NumberLabel<Integer>();
+		layoutPanel.add(winsLabel);
+		layoutPanel.setWidgetLeftWidth(winsLabel, 105.0, Unit.PX, 131.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(winsLabel, 236.0, Unit.PX, 18.0, Unit.PX);
 		
-		IntegerBox integerBox_2 = new IntegerBox();
-		integerBox_2.setText("326");
-		layoutPanel.add(integerBox_2);
-		layoutPanel.setWidgetLeftWidth(integerBox_2, 72.0, Unit.PX, 151.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(integerBox_2, 284.0, Unit.PX, 26.0, Unit.PX);
+		NumberLabel<Integer> lossesLabel = new NumberLabel<Integer>();
+		layoutPanel.add(lossesLabel);
+		layoutPanel.setWidgetLeftWidth(lossesLabel, 105.0, Unit.PX, 131.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(lossesLabel, 284.0, Unit.PX, 18.0, Unit.PX);
 		
 		
 	}
