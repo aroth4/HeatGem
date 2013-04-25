@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.MouseListener;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widget.client.TextButton;
 
+import edu.ycp.cs320.heatgem.shared.Battle;
 import edu.ycp.cs320.heatgem.shared.Game;
 import edu.ycp.cs320.heatgem.shared.Logic;
 import edu.ycp.cs320.heatgem.shared.Player;
