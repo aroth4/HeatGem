@@ -112,8 +112,11 @@ public class GameUI extends Composite {
 		canvas.addMouseDownHandler(new MouseDownHandler() {
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
-				GWT.log("Health" + player2.getHealth());
-				Logic.doBattle(player1, player2);
+				if((MouseX > 380 && MouseX < 455) && (MouseY > 360 && MouseY < 390))
+				{
+					Logic.doBattle(player1, player2);
+					GWT.log("Health:" + player2.getHealth());
+				}
 			}
 		});
 
