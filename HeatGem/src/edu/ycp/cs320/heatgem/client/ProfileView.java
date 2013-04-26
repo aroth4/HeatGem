@@ -1,5 +1,6 @@
 package edu.ycp.cs320.heatgem.client;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.dom.client.Style.Unit;
@@ -8,6 +9,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.NumberLabel;
 
+import edu.ycp.cs320.heatgem.shared.User;
+import edu.ycp.cs320.heatgem.shared.UserProfile;
+
 public class ProfileView extends Composite {
 	
 	private Image UserFace;
@@ -15,10 +19,34 @@ public class ProfileView extends Composite {
 	private NumberLabel<Integer> experienceLabel;
 	private Label nameProfileLabel;
 
+	private int EXP, Level, wins, losses, highScore, callback;
+	private String usr, email, username, password;
 	/**
 	 * @param args
 	 */
 	public ProfileView() {
+		
+		RPC.userService.getUserProfile(username, password, email, Level, EXP, losses, wins, highScore, new AsyncCallback <UserProfile>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				// show error message
+				//errorLabel.setText("Could not communicate with server?");
+			}
+
+			@Override
+			public void onSuccess(UserProfile result) {
+				if (result == null) {
+					// show error message
+					//errorLabel.setText("Unknown username/password");
+				} else {
+					// TODO: switch to home page
+					//errorLabel.setText("Success! Should switch to home page");
+					//HomePage view = new HomePage();
+					//HeatGem.setView(view);
+					//view.activate(); // do any required dynamic initialization
+				}
+			}
+		});
 		
 		LayoutPanel layoutPanel = new LayoutPanel();
 		initWidget(layoutPanel);
@@ -73,11 +101,13 @@ public class ProfileView extends Composite {
 		layoutPanel.setWidgetTopHeight(lblLosses, 284.0, Unit.PX, 18.0, Unit.PX);
 		
 		numberLevelLabel = new NumberLabel<Integer>();
+		numberLevelLabel.setValue(Level);
 		layoutPanel.add(numberLevelLabel);
 		layoutPanel.setWidgetLeftWidth(numberLevelLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(numberLevelLabel, 128.0, Unit.PX, 18.0, Unit.PX);
 		
 		experienceLabel = new NumberLabel<Integer>();
+		experienceLabel.setValue(EXP);
 		layoutPanel.add(experienceLabel);
 		layoutPanel.setWidgetLeftWidth(experienceLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(experienceLabel, 181.0, Unit.PX, 18.0, Unit.PX);
@@ -88,11 +118,13 @@ public class ProfileView extends Composite {
 		layoutPanel.setWidgetTopHeight(nameProfileLabel, 81.0, Unit.PX, 18.0, Unit.PX);
 		
 		NumberLabel<Integer> winsLabel = new NumberLabel<Integer>();
+		winsLabel.setValue(wins);
 		layoutPanel.add(winsLabel);
 		layoutPanel.setWidgetLeftWidth(winsLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(winsLabel, 236.0, Unit.PX, 18.0, Unit.PX);
 		
 		NumberLabel<Integer> lossesLabel = new NumberLabel<Integer>();
+		lossesLabel.setValue(losses);
 		layoutPanel.add(lossesLabel);
 		layoutPanel.setWidgetLeftWidth(lossesLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lossesLabel, 284.0, Unit.PX, 18.0, Unit.PX);
