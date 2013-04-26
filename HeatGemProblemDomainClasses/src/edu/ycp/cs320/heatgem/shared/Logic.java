@@ -13,7 +13,7 @@ public class Logic {
             // cUI.parseInput();
              skirmish.turn();
              Player1.setHealth(skirmish.getHealth1());
-             Monster.setHealth(skirmish.getHealth2());
+             Player2.setHealth(skirmish.getHealth2());
              if (skirmish.battleState() != 0)
                  break;
          }

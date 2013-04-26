@@ -19,35 +19,18 @@ public class ProfileView extends Composite {
 	private NumberLabel<Integer> experienceLabel;
 	private Label nameProfileLabel;
 
-	private int EXP, Level, wins, losses, highScore, callback;
-	private String usr, email, username, password;
+	private int EXP, Level, wins, losses;
+	private String username;
+
+	private UserProfile model;
+	private NumberLabel<Integer> lossesLabel;
+	private NumberLabel<Integer> Experience;
+	
 	/**
 	 * @param args
 	 */
 	public ProfileView() {
-		
-		RPC.userService.getUserProfile(username, password, email, Level, EXP, losses, wins, highScore, new AsyncCallback <UserProfile>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				// show error message
-				//errorLabel.setText("Could not communicate with server?");
-			}
-
-			@Override
-			public void onSuccess(UserProfile result) {
-				if (result == null) {
-					// show error message
-					//errorLabel.setText("Unknown username/password");
-				} else {
-					// TODO: switch to home page
-					//errorLabel.setText("Success! Should switch to home page");
-					//HomePage view = new HomePage();
-					//HeatGem.setView(view);
-					//view.activate(); // do any required dynamic initialization
-				}
-			}
-		});
-		
+		activate();
 		LayoutPanel layoutPanel = new LayoutPanel();
 		initWidget(layoutPanel);
 		layoutPanel.setSize("568px", "472px");
@@ -101,13 +84,11 @@ public class ProfileView extends Composite {
 		layoutPanel.setWidgetTopHeight(lblLosses, 284.0, Unit.PX, 18.0, Unit.PX);
 		
 		numberLevelLabel = new NumberLabel<Integer>();
-		numberLevelLabel.setValue(Level);
 		layoutPanel.add(numberLevelLabel);
 		layoutPanel.setWidgetLeftWidth(numberLevelLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(numberLevelLabel, 128.0, Unit.PX, 18.0, Unit.PX);
 		
 		experienceLabel = new NumberLabel<Integer>();
-		experienceLabel.setValue(EXP);
 		layoutPanel.add(experienceLabel);
 		layoutPanel.setWidgetLeftWidth(experienceLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(experienceLabel, 181.0, Unit.PX, 18.0, Unit.PX);
@@ -118,17 +99,54 @@ public class ProfileView extends Composite {
 		layoutPanel.setWidgetTopHeight(nameProfileLabel, 81.0, Unit.PX, 18.0, Unit.PX);
 		
 		NumberLabel<Integer> winsLabel = new NumberLabel<Integer>();
-		winsLabel.setValue(wins);
 		layoutPanel.add(winsLabel);
 		layoutPanel.setWidgetLeftWidth(winsLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(winsLabel, 236.0, Unit.PX, 18.0, Unit.PX);
 		
-		NumberLabel<Integer> lossesLabel = new NumberLabel<Integer>();
-		lossesLabel.setValue(losses);
+		lossesLabel = new NumberLabel<Integer>();
 		layoutPanel.add(lossesLabel);
 		layoutPanel.setWidgetLeftWidth(lossesLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lossesLabel, 284.0, Unit.PX, 18.0, Unit.PX);
 		
 		
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public void activate() {
+		
+		RPC.userService.getUserProfile(username/*, password, email, Level, EXP, losses, wins, highScore*/, new AsyncCallback <UserProfile>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// show error message
+				//errorLabel.setText("Could not communicate with server?");
+			}
+
+			@Override
+			public void onSuccess(UserProfile result) {
+				if (result == null) {
+					// show error message
+					//errorLabel.setText("Unknown username/password");
+					model = result;
+					update();
+				} else {
+					// TODO: switch to home page
+					//errorLabel.setText("Success! Should switch to home page");
+					//HomePage view = new HomePage();
+					//HeatGem.setView(view);
+					//view.activate(); // do any required dynamic initialization
+				}
+			}
+		});
+
+	}
+
+	protected void update() {
+		// Use values in model object to update UI components
+		numberLevelLabel.setValue(model.getLevel());
+		experienceLabel.setValue(model.getHighScore());
 	}
 }

@@ -4,8 +4,8 @@ import java.util.Random;
 
 
 public class Battle {
-	 static Player One;
-     static Player Two;
+	 private Player One;
+     private Player Two;
 
 
      public Battle(Player playerOne, Player Monster)

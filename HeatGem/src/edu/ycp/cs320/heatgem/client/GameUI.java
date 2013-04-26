@@ -66,7 +66,6 @@ public class GameUI extends Composite {
 	// The game object contains all of the game state data.
 	private Game game;
 	
-	@SuppressWarnings("deprecation")
 	public GameUI() {
 		
 		//FocusPanel

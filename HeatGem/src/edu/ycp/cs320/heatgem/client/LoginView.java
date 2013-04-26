@@ -141,6 +141,7 @@ public class LoginView extends Composite {
 					// TODO: switch to home page
 					errorLabel.setText("Success! Should switch to home page");
 					HomePage view = new HomePage();
+					view.setUser(result);
 					HeatGem.setView(view);
 					view.activate(); // do any required dynamic initialization
 				}
