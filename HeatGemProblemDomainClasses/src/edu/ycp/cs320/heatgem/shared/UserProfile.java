@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 public class UserProfile implements Serializable {
 
-	// comment Aaron's singing<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	
 	// fields
 	private int userId;
 	private String name;
 	private int level;
 	private int highScore;
+	private int experience;
+	
 	// etc.
 	
 	private int photoId;
