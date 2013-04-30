@@ -19,12 +19,11 @@ public class ProfileView extends Composite {
 	private NumberLabel<Integer> experienceLabel;
 	private Label nameProfileLabel;
 
-	private int EXP, Level, wins, losses;
 	private String username;
 
 	private UserProfile model;
 	private NumberLabel<Integer> lossesLabel;
-	private NumberLabel<Integer> Experience;
+	private NumberLabel<Integer> winsLabel;
 	
 	/**
 	 * @param args
@@ -98,7 +97,7 @@ public class ProfileView extends Composite {
 		layoutPanel.setWidgetLeftWidth(nameProfileLabel, 105.0, Unit.PX, 56.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(nameProfileLabel, 81.0, Unit.PX, 18.0, Unit.PX);
 		
-		NumberLabel<Integer> winsLabel = new NumberLabel<Integer>();
+		winsLabel = new NumberLabel<Integer>();
 		layoutPanel.add(winsLabel);
 		layoutPanel.setWidgetLeftWidth(winsLabel, 105.0, Unit.PX, 131.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(winsLabel, 236.0, Unit.PX, 18.0, Unit.PX);
@@ -117,28 +116,18 @@ public class ProfileView extends Composite {
 	
 	public void activate() {
 		
-		RPC.userService.getUserProfile(username/*, password, email, Level, EXP, losses, wins, highScore*/, new AsyncCallback <UserProfile>() {
+		RPC.userService.getUserProfile(username, new AsyncCallback <UserProfile>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				// show error message
-				//errorLabel.setText("Could not communicate with server?");
+				System.out.println("Could not communicate with server?");
 			}
 
 			@Override
 			public void onSuccess(UserProfile result) {
-				if (result == null) {
-					// show error message
-					//errorLabel.setText("Unknown username/password");
 					model = result;
 					update();
-				} else {
-					// TODO: switch to home page
-					//errorLabel.setText("Success! Should switch to home page");
-					//HomePage view = new HomePage();
-					//HeatGem.setView(view);
-					//view.activate(); // do any required dynamic initialization
-				}
 			}
 		});
 
@@ -147,6 +136,9 @@ public class ProfileView extends Composite {
 	protected void update() {
 		// Use values in model object to update UI components
 		numberLevelLabel.setValue(model.getLevel());
-		experienceLabel.setValue(model.getHighScore());
+		experienceLabel.setValue(model.getExperience());
+		lossesLabel.setValue(model.getLosses());
+		winsLabel.setValue(model.getWins());
+		
 	}
 }
