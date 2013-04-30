@@ -62,7 +62,6 @@ public class GameUI extends Composite {
 	private Image Defeat;
 	private Player player1;
 	private Player player2;
-	private Game Game1;
 	private int p1Health, p2Health;
 	
 	// The game object contains all of the game state data.
@@ -173,7 +172,7 @@ public class GameUI extends Composite {
 		AttackSelected = HeatGem.getImage("AttackSelected.png");
 		HealSelected = HeatGem.getImage("HealSelected.png");
 		
-		Game1 = new Game();
+		game = new Game();
 		player1 = new Player("Player");
 		player2 = new Player("Monster");
 		
@@ -247,7 +246,8 @@ public class GameUI extends Composite {
 					410);
 		}
 		
-		bufCtx.setFont("sans-serif");
+		bufCtx.setFillStyle("red");
+		bufCtx.setFont("bold 16px sans-serif");
 		bufCtx.fillText((p1Health + " / 100") , 30, 430);
 		bufCtx.fillText(p2Health + " / 100", 450, 35);
 		
