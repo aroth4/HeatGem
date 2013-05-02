@@ -47,16 +47,18 @@ public class Game {
 		player2 = new Player("Enemy");	
 		player1.setHealth(100);
 		player2.setHealth(100);
+		
 	}
     
 	
     //What time? Game Time...
-    float currentTime = 0f;
+    public float currentTime = 0f;
     
     
 	public void timerTick() {
 		// Update stuff that needs to be updated
 		count++;
+		currentTime +=1;
 		//Game Timer that increments by seconds
 		if(count % 60 == 0){
 			currentTime +=1;
