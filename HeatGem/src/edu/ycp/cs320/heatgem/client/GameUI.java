@@ -1,42 +1,30 @@
 package edu.ycp.cs320.heatgem.client;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseOverHandler;
+
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutHandler;
+
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.MouseListener;
-
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.widget.client.TextButton;
+
 
 import edu.ycp.cs320.heatgem.shared.Battle;
 import edu.ycp.cs320.heatgem.shared.Game;
 import edu.ycp.cs320.heatgem.shared.Logic;
 import edu.ycp.cs320.heatgem.shared.Player;
+import edu.ycp.cs320.heatgem.shared.Score;
 
 public class GameUI extends Composite {
 
@@ -57,6 +45,8 @@ public class GameUI extends Composite {
 	private Image Heal;
 	private Image HealSelected;
 	private Image Defeat;
+	private Image Victory;
+	private Image MediumHealth, LowHealth;
 	private Player player1;
 	private Player player2;
 	private Battle BattleState;
@@ -64,6 +54,9 @@ public class GameUI extends Composite {
 	private Game game;
 	private int MilliTime;
 	private int SecondTime;
+	public int TotalTime; 
+	private int PScore;
+	private Score score;
 
 	public GameUI() {
 
@@ -95,26 +88,25 @@ public class GameUI extends Composite {
 				Draw();
 				if (BattleState.battleState() == 0) {
 					MilliTime++; // Framerate at 10 frames per second
+					TotalTime++;
 					if (MilliTime % 100 == 0) { // Incrememnt timer by seconds ONLY if game is in session
 						SecondTime++;
 						MilliTime = 0;
 					}
 				}
+				else { //Get Score
+					PScore = (int) score.getScore(TotalTime, player1);
+					GWT.log(Double.toString(PScore));
+				}
 			}
 		};
 		
-//		this.scoreTimer = new Timer() {
-//			@Override
-//			public void run() {
-//
-//			}
-//		};
+
 
 		canvas.addMouseMoveHandler(new MouseMoveHandler() {
 			@Override
 			public void onMouseMove(MouseMoveEvent event) {
-				// GWT.log("Mouse moved: x="+ event.getX()+ ", y=" +
-				// event.getY());
+
 				MouseX = event.getX();
 				MouseY = event.getY();
 			}
@@ -183,19 +175,23 @@ public class GameUI extends Composite {
 		PlayerHealth = HeatGem.getImage("TBAR.jpg");
 		EnemyHealth = HeatGem.getImage("TBAR.jpg");
 		PlayerFace = HeatGem.getImage("FullHealth.png");
-		EnemyFace = HeatGem.getImage("YellowHealth.png");
+		EnemyFace = HeatGem.getImage("FullHealth.png");
 		Attack = HeatGem.getImage("Attack.png");
 		Heal = HeatGem.getImage("Heal.png");
 		Defeat = HeatGem.getImage("Defeat.png");
+		Victory = HeatGem.getImage("Victory.png");
 		AttackSelected = HeatGem.getImage("AttackSelected.png");
 		HealSelected = HeatGem.getImage("HealSelected.png");
 		GameWin = HeatGem.getImage("BattleWin.jpg");
 		GameLoss = HeatGem.getImage("BattleLoss.jpg");
+		MediumHealth = HeatGem.getImage("YellowHealth.png");
+		LowHealth = HeatGem.getImage("LowHealth.png");
 
 		game = new Game();
 		player1 = new Player("Player");
 		player2 = new Player("Monster");
 		BattleState = new Battle(player1, player2);
+		score = new Score();
 		// Add a listener for mouse motion.
 		// Each time the mouse is moved, clicked, released, etc. the
 		// handleMouseMove method
@@ -222,10 +218,19 @@ public class GameUI extends Composite {
 			int player1Health = player1.getHealth();
 			if (player1Health > 50) {
 				bufCtx.setFillStyle("green");
+				// Draw Sprite for character
+				bufCtx.drawImage((ImageElement) PlayerFace.getElement().cast(), 50,
+						200);
 			} else if (player1Health <= 50 && player1Health > 25) {
 				bufCtx.setFillStyle("yellow");
+				// Draw Sprite for character
+				bufCtx.drawImage((ImageElement) MediumHealth.getElement().cast(), 50,
+						200);
 			} else {
 				bufCtx.setFillStyle("red");
+				// Draw Sprite for character
+				bufCtx.drawImage((ImageElement) LowHealth.getElement().cast(), 50,
+						200);
 			}
 			// Draw PlayerHealth Bar that scales based on health size
 			bufCtx.fillRect(30, 430, (double) player1Health * 3, 25);
@@ -233,25 +238,29 @@ public class GameUI extends Composite {
 			int player2Health = player2.getHealth();
 			if (player2Health > 50) {
 				bufCtx.setFillStyle("green");
+				// Draw Sprite for Enemy
+				bufCtx.drawImage((ImageElement) EnemyFace.getElement().cast(), 580,
+						100);
 			} else if (player2Health <= 50 && player2Health > 25) {
 				bufCtx.setFillStyle("yellow");
+				// Draw Sprite for Enemy
+				bufCtx.drawImage((ImageElement) MediumHealth.getElement().cast(), 580,
+						100);
 			} else {
 				bufCtx.setFillStyle("red");
+				// Draw Sprite for Enemy
+				bufCtx.drawImage((ImageElement) LowHealth.getElement().cast(), 580,
+						100);
 			}
 
 			// Draw EnemyHealth Bar that scales based on health size
 			bufCtx.fillRect(450, 35, (double) player2Health * 3, 25);
-			// Draw Sprite for character
-			bufCtx.drawImage((ImageElement) PlayerFace.getElement().cast(), 50,
-					200);
-			// Draw Sprite for Enemy
-			bufCtx.drawImage((ImageElement) EnemyFace.getElement().cast(), 580,
-					100);
+
 			if ((MouseX > 380 && MouseX < 455)
 					&& (MouseY > 360 && MouseY < 390)) {
 				// Draw AttackSelected Button
-				bufCtx.drawImage((ImageElement) AttackSelected.getElement()
-						.cast(), 380, 360);
+				bufCtx.drawImage((ImageElement) AttackSelected.getElement().cast(), 
+						380, 360);
 			} else {
 				// Draw Attack Button
 				bufCtx.drawImage((ImageElement) Attack.getElement().cast(),
@@ -282,9 +291,24 @@ public class GameUI extends Composite {
 		} else if (BattleState.battleState() == 1) {
 			// Draw loss image
 			bufCtx.drawImage((ImageElement) GameLoss.getElement().cast(), 0, 0);
+			bufCtx.setFillStyle("green");										
+			bufCtx.setFont("bold 36px sans-serif");	
+			bufCtx.fillText("Your Score: " + Integer.toString(PScore), 400, 200); 
+			
+			// Draw Sprite for character
+			bufCtx.drawImage((ImageElement) Defeat.getElement().cast(), 50,
+					200);
+			
 		} else {
 			// Draw win image
 			bufCtx.drawImage((ImageElement) GameWin.getElement().cast(), 0, 0);
+			bufCtx.setFillStyle("green");										
+			bufCtx.setFont("bold 36px sans-serif");	
+			bufCtx.fillText("Your Score: " + Integer.toString(PScore), 350, 250); 
+			
+			// Draw Sprite for character
+			bufCtx.drawImage((ImageElement) Victory.getElement().cast(), 50,
+					200);
 		}
 		// Copy buffer onto main canvas
 		ctx.drawImage((CanvasElement) buffer.getElement().cast(), 0, 0);
