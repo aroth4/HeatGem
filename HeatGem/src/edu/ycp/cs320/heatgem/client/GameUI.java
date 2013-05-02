@@ -62,7 +62,8 @@ public class GameUI extends Composite {
 	private Image Defeat;
 	private Player player1;
 	private Player player2;
-	private int p1Health, p2Health;
+	//private int p1Health;
+	//private int p2Health;
 	
 	// The game object contains all of the game state data.
 	private Game game;
@@ -98,8 +99,8 @@ public class GameUI extends Composite {
 			@Override
 			public void run() {
 				Draw();
-				p1Health = player1.getHealth();
-				p2Health = player2.getHealth();
+				//p1Health = player1.getHealth();
+				//p2Health = player2.getHealth();
 			}
 		};
 		
@@ -119,16 +120,27 @@ public class GameUI extends Composite {
 			public void onMouseDown(MouseDownEvent event) {
 				if((MouseX > 380 && MouseX < 455) && (MouseY > 360 && MouseY < 390))
 				{
+					// Attack
+					GWT.log("Health before attack(2):" + player2.getHealth());
 					Logic.doBattle(player1, player2);
-					GWT.log("Health:" + player2.getHealth());
-					System.out.println(p1Health);
-					System.out.println(p2Health);
+					
+					
+					GWT.log("Health after attack(2):" + player2.getHealth());
+					//GWT.log("" + p1Health);
+					GWT.log("" + player1.getHealth());
+					GWT.log(""+ player2.getHealth());
 				}
 				else if ((MouseX > 380 && MouseX < 455) && (MouseY > 410 && MouseY < 440)){
+					// Heal
+					GWT.log("Health before heal(1):" + player1.getHealth());
+					
 					Logic.doHeal(player1, player2);
-					GWT.log("Health:" + player2.getHealth());
-					System.out.println(p1Health);
-					System.out.println(p2Health);
+					
+					
+					GWT.log("Health after heal(1):" + player1.getHealth());
+					//GWT.log("" + p1Health);
+					GWT.log("" + player1.getHealth());
+					GWT.log("" + player2.getHealth());
 				}
 			}
 		});
@@ -201,14 +213,34 @@ public class GameUI extends Composite {
 		bufCtx.drawImage((ImageElement) background.getElement().cast(),
 				0,
 				0);
-		//Draw PlayerHealth Bar
-		bufCtx.drawImage((ImageElement) PlayerHealth.getElement().cast(),
-				30,
-				430);
-		//Draw EnemyHealth Bar
-		bufCtx.drawImage((ImageElement) EnemyHealth.getElement().cast(),
-				450,
-				35);
+		
+		//if (p1Health > 50){
+		int player1Health = player1.getHealth();
+		if (player1Health > 50){
+		bufCtx.setFillStyle("green");
+		}
+		else if (player1Health <= 50 && player1Health > 25){
+			bufCtx.setFillStyle("yellow");
+		}
+		else {
+			bufCtx.setFillStyle("red");
+		}
+		//Draw PlayerHealth Bar that scales based on health size
+		bufCtx.fillRect(30,430,(double)player1Health * 3, 25);
+		
+		int player2Health = player2.getHealth();
+		if (player2Health > 50){
+			bufCtx.setFillStyle("green");
+			}
+			else if (player2Health <= 50 && player2Health > 25){
+				bufCtx.setFillStyle("yellow");
+			}
+			else {
+				bufCtx.setFillStyle("red");
+			}
+		
+		//Draw EnemyHealth Bar that scales based on health size
+		bufCtx.fillRect(450,35,(double)player2Health * 3, 25);
 		//Draw Sprite for character
 		bufCtx.drawImage((ImageElement) PlayerFace.getElement().cast(),
 				50,
@@ -248,8 +280,8 @@ public class GameUI extends Composite {
 		
 		bufCtx.setFillStyle("red");
 		bufCtx.setFont("bold 16px sans-serif");
-		bufCtx.fillText((p1Health + " / 100") , 30, 430);
-		bufCtx.fillText(p2Health + " / 100", 450, 35);
+		bufCtx.fillText((player1Health + " / 100") , 30, 430);
+		bufCtx.fillText(player2Health + " / 100", 450, 35);
 		
 		// Copy buffer onto main canvas
 		ctx.drawImage((CanvasElement) buffer.getElement().cast(), 0, 0);

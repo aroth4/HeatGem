@@ -14,53 +14,33 @@ public class Battle {
          Two = Monster;
      }
 
-     public void Attack() //Initiate attack phase, and determine what the enemy will do
+     public void Attack() //Initiate attack phase
      {
          Random random = new Random();
-         Random TRandom = new Random();
          int playerDamage = (int)random.nextInt(10);
-         int monsterDamage = random.nextInt(10);
-         
-         int MTurn = (int)TRandom.nextInt(2);
-         Two.setHealth(One.getHealth() - playerDamage); //Attack enemy
-         
-         if (MTurn == 1){ //Monster attacks
-        	MonsterAttack();
-         }
-         else
-         {
-        	 MonsterHeal(); //Monster heals
-         }
+         Two.setHealth(Two.getHealth() - playerDamage); //Attack enemy
      }
+     
+ 	public void heal() { //Initiates instance for player to heal
+		Random random = new Random();
+		int playerHeal = (int)random.nextInt(10);
+		One.setHealth(One.getHealth() + playerHeal);  //Player is healed
+ 	}
 
  	public void MonsterAttack() {  //Monster attacks
  		Random random = new Random();
  		int monsterDamage = random.nextInt(10);
-		One.setHealth(One.getHealth() - monsterDamage);
+		One.setHealth(One.getHealth() - monsterDamage); //Attack player
 	}
 
 	public void MonsterHeal() { //Monster heals
  		Random random = new Random();
  		int monsterHeal = random.nextInt(10);
-		Two.setHealth(Two.getHealth() + monsterHeal);
+		Two.setHealth(Two.getHealth() + monsterHeal);//Attack enemy
 	}
 
-	public void heal() { //Initiates instance for player to heal and determines if the enemy will heal as well
-		Random random = new Random();
-		Random TRandom = new Random();
-		int playerHeal = (int)random.nextInt(10);
-		One.setHealth(One.getHealth() + playerHeal);  //Player is healed
+
 		
-		int MTurn = (int)TRandom.nextInt(2);
-		  if (MTurn == 1){ //Monster heals
-	        	MonsterHeal();
-	         }
-	         else
-	         {
-	        	 MonsterAttack(); //Monster attacks
-	         }
-		
-	}
      public int battleState()
      {
          if (One.getHealth() <= 0)
