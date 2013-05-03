@@ -13,6 +13,7 @@ import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.ImageElement;
 
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -58,6 +59,8 @@ public class GameUI extends Composite {
 	private int PScore;
 	private Score score;
 
+	
+	
 	public GameUI() {
 
 		// FocusPanel
@@ -98,7 +101,7 @@ public class GameUI extends Composite {
 						}
 					} else { // Get Score
 						PScore = (int) score.getScore(TotalTime, player1);
-						timer.cancel();
+						//timer.cancel();
 					}
 				} else {
 				} // Do nothing
@@ -176,6 +179,11 @@ public class GameUI extends Composite {
 		BattleState = new Battle(player1, player2);
 		score = new Score();
 		gamestate = 0;
+		
+
+		
+		
+		
 		// Add a listener for mouse motion.
 		// Each time the mouse is moved, clicked, released, etc. the
 		// handleMouseMove method
@@ -195,7 +203,7 @@ public class GameUI extends Composite {
 		if (gamestate == 0) {
 
 			bufCtx.drawImage((ImageElement) HomePage.getElement().cast(), 0, 0);
-
+			
 			if ((MouseX >= 300 && MouseX <= 500)
 					&& (MouseY >= 200 && MouseY <= 250)) {
 				bufCtx.drawImage((ImageElement) PlaySelected.getElement()

@@ -139,7 +139,7 @@ public class HomePage extends Composite {
 				tabViewLayoutPanel.add(nextTabView);
 				
 				
-				// FIXME: think of a better way to do this
+				
 				if (nextTabView instanceof GameUI) {
 					((GameUI)nextTabView).startGame();
 				} else if (nextTabView instanceof ProfileView) {
