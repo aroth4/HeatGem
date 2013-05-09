@@ -5,20 +5,15 @@ import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.ImageElement;
-
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-
 import edu.ycp.cs320.heatgem.shared.Battle;
 import edu.ycp.cs320.heatgem.shared.Game;
 import edu.ycp.cs320.heatgem.shared.Logic;
@@ -36,8 +31,7 @@ public class GameUI extends Composite {
 	private Context2d ctx;
 	private Timer timer;
 	private Image background, GameWin, GameLoss, HomePage;
-	private Image PlayerHealth;
-	private Image EnemyHealth;
+//	private Image Layer1, Layer2, Layer3, Layer4, Layer5, Layer6, Layer7, Layer8, Layer9, Layer10, Layer11, Layer12, Layer13, Layer14,Layer15;
 	private Image PlayerFace;
 	private Image EnemyFace;
 	private Image Attack;
@@ -58,6 +52,7 @@ public class GameUI extends Composite {
 	public int TotalTime;
 	private int PScore;
 	private Score score;
+	private int HealthMove, HealthMove2, PrevHealth = 100, PrevHealth2 = 100;
 
 	
 	
@@ -134,10 +129,30 @@ public class GameUI extends Composite {
 
 							Logic.doBattle(player1, player2);
 
+							//Set localvariable to store and print the player's health change
+							HealthMove = PrevHealth - player1.getHealth();
+							HealthMove2 = PrevHealth2 - player2.getHealth();
+							
+							HealthMove *= -1; 
+							HealthMove2 *= -1;
+							
+							PrevHealth = player1.getHealth();
+							PrevHealth2 = player2.getHealth();
+
 						} else if ((MouseX > 380 && MouseX < 455)
 								&& (MouseY > 410 && MouseY < 440)) {
 
 							Logic.doHeal(player1, player2);
+							
+							//Set localvariable to store and print the player's health change
+							HealthMove = PrevHealth - player1.getHealth();
+							HealthMove2 = PrevHealth2 - player2.getHealth();
+							
+							HealthMove *= -1; 
+							HealthMove2 *= -1;
+							
+							PrevHealth = player1.getHealth();
+							PrevHealth2 = player2.getHealth();
 
 						}
 					}
@@ -155,8 +170,6 @@ public class GameUI extends Composite {
 	public void startGame() {
 		// get background and sprite images that will be used for painting
 		background = HeatGem.getImage("RoughBattle.jpg");
-		PlayerHealth = HeatGem.getImage("TBAR.jpg");
-		EnemyHealth = HeatGem.getImage("TBAR.jpg");
 		PlayerFace = HeatGem.getImage("FullHealth.png");
 		EnemyFace = HeatGem.getImage("FullHealth.png");
 		Attack = HeatGem.getImage("Attack.png");
@@ -172,7 +185,9 @@ public class GameUI extends Composite {
 		HomePage = HeatGem.getImage("HomepageDif.gif");
 		Play = HeatGem.getImage("Play.png");
 		PlaySelected = HeatGem.getImage("PlaySelected.png");
+		
 
+		
 		game = new Game();
 		player1 = new Player("Player");
 		player2 = new Player("Monster");
@@ -201,8 +216,9 @@ public class GameUI extends Composite {
 
 		// Draw home menu
 		if (gamestate == 0) {
-
-			bufCtx.drawImage((ImageElement) HomePage.getElement().cast(), 0, 0);
+			for (int i = 1; i <= 15; i++){
+				bufCtx.drawImage((ImageElement) HomePage.getElement().cast(), 0, 0);
+			}
 			
 			if ((MouseX >= 300 && MouseX <= 500)
 					&& (MouseY >= 200 && MouseY <= 250)) {
@@ -294,6 +310,7 @@ public class GameUI extends Composite {
 				bufCtx.fillText(
 						Integer.toString(SecondTime) + ":"
 								+ Integer.toString(MilliTime), 700, 378);
+				bufCtx.fillText("Health changes after last move- Player1: " + HealthMove + " Player2:" + HealthMove2, 320, 330);
 			} else if (BattleState.battleState() == 1) {
 				// Draw loss image
 				bufCtx.drawImage((ImageElement) GameLoss.getElement().cast(),

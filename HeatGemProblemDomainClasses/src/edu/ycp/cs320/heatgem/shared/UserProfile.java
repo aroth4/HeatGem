@@ -18,8 +18,6 @@ public class UserProfile implements Serializable {
 	
 	// etc.
 	
-	private int photoId;
-	
 	// methods
 	
 	public UserProfile() {

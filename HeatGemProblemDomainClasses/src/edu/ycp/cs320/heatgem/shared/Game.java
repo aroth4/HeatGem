@@ -1,13 +1,6 @@
 package edu.ycp.cs320.heatgem.shared;
 
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.applet.*;
-import java.net.*;
-
-
-
 
 /**
  * The Game class represents the game state:
@@ -27,17 +20,10 @@ public class Game {
     private int count;
     
     
-    private int MLocX, MLocY;
     
     public Player player1;
     public Player player2;
     public Battle battleState;
-    
-    //Variables to store rectangle positions/size
-    private static double width;
-	private static double height;
-	private static double pX;
-	private static double pY;
 	
 	
 	

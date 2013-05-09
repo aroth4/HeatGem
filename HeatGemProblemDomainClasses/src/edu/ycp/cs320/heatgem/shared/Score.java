@@ -1,6 +1,5 @@
 package edu.ycp.cs320.heatgem.shared;
 
-import java.math.*;
 
 
 public class Score {
